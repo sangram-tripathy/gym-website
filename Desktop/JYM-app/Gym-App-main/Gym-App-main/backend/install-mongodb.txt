@@ -1,0 +1,2 @@
+Run this command in your backend directory:
+npm install mongoose
