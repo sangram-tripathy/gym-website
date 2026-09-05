@@ -27,6 +27,7 @@ const AdminDashboard = () => {
         setMessages(m.data.messages);
       })
       .catch(() => toast.error("Failed to load dashboard data"));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!stats) return <div className="admin-loading">Loading dashboard...</div>;

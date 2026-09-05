@@ -11,6 +11,11 @@ import aiRoutes from "./routes/ai.js";
 
 config({ path: "./config.env" });
 
+if (!process.env.GROQ_API_KEY) console.warn("WARNING: GROQ_API_KEY is not set. AI features will not work.");
+if (!process.env.MONGO_URI) console.warn("WARNING: MONGO_URI is not set.");
+if (!process.env.JWT_SECRET) console.warn("WARNING: JWT_SECRET is not set.");
+if (!process.env.SMTP_MAIL) console.warn("WARNING: SMTP_MAIL is not set. Email features will not work.");
+
 const app = express();
 
 mongoose
@@ -35,8 +40,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/workouts", workoutRoutes);
@@ -63,4 +68,8 @@ app.post("/send/mail", async (req, res) => {
 
 app.listen(process.env.PORT, () => {
   console.log(`Server listening at port ${process.env.PORT}`);
+});
+
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
 });
