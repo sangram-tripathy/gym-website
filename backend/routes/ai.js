@@ -11,7 +11,7 @@ const callGroq = async (messages) => {
       Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
     },
     body: JSON.stringify({
-      model: "mixtral-8x7b-32768",
+      model: "llama-3.3-70b-versatile",
       messages,
       temperature: 0.7,
       max_tokens: 2048,
@@ -27,7 +27,6 @@ const callGroq = async (messages) => {
   return data.choices?.[0]?.message?.content || "";
 };
 
-// ── 1. AI Workout Plan Generator ──────────────────────────────────────────────
 router.post("/generate-plan", protect, async (req, res) => {
   const { goal, fitnessLevel, daysPerWeek, limitations } = req.body;
   if (!goal || !fitnessLevel || !daysPerWeek)
@@ -63,7 +62,6 @@ Categories must be one of: Strength, Cardio, Flexibility, Weight Loss, Functiona
   }
 });
 
-// ── 2. AI Fitness Chatbot ─────────────────────────────────────────────────────
 router.post("/chat", async (req, res) => {
   const { message, history } = req.body;
   if (!message)
@@ -90,7 +88,6 @@ Keep answers concise and practical. Use bullet points when listing items.`,
   }
 });
 
-// ── 3. AI Diet Recommender ────────────────────────────────────────────────────
 router.post("/diet-plan", async (req, res) => {
   const { bmi, weight, height, gender, goal } = req.body;
   if (!bmi || !weight || !height || !gender)
